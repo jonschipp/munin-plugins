@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+FILE=/impstats/rsyslog-stats.log
+IFS=:
+if [ "$1" == "config" ]; then
+cat <<EOF
+graph_title Number of Rsyslog Messages in the Queue
+graph_category network
+graph_vlabel Messages per minute
+graph_info Queued syslog messages 
+graph_period minute
+EOF
+for Q in $QUEUES
+do
+        echo "${Q}.label $Q" | sed 's/\\//g'
+        echo "${Q}.min 0" | sed 's/\\//g'
+        echo "${Q}.type DERIVE" | sed 's/\\//g'
+        echo "${Q}.info Logs by Queue $Q" | sed 's/\\//g'
+done
+else
+        if [ -f $FILE ] && [ -r $FILE ]; then
+                for Q in $QUEUES;
+                do
+                        awk "/$Q/ && /$(date +"%b %e")/" $FILE |
+                        grep -o ' size=[0-9]\+ ' | tail -1 | awk -F "=" -v queue=$Q '{ printf("%s.value %d\n", queue, $2) }' 2>/dev/null
+                done
+                unset IFS
+        else
+                echo "File not found!"
+                exit 1
+        fi
+fi
