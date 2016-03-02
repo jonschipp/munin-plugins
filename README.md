@@ -32,15 +32,24 @@ Examples:
 
 ### OSSEC
 
+Plugins to graph OSSEC stats for Munin
+
+* munin/ossec_ar_stats - Graph active response script usage
+* munin/ossec_stats - Graph alert counts by 3 major types of alerts: rules, syscheck, or rootcheck
+* munin/ossec_top_groups - Graph alert counts by top 10 rule categories
+* munin/ossec_top_rules - Graph alert counts by top 10 rule descriptions
+
 Location
 ```
 $ ls /etc/munin/plugins/ossec_*
-/etc/munin/plugins/ossec_stats  /etc/munin/plugins/ossec_top_groups /etc/munin/plugins/ossec_top_rules
+/etc/munin/plugins/ossec_ar_stats /etc/munin/plugins/ossec_stats  /etc/munin/plugins/ossec_top_groups /etc/munin/plugins/ossec_top_rules
 ```
 
 Configuration
 ```
 $ cat /etc/munin/plugin-conf.d/ossec_*
+[ossec_ar_stats]
+user root
 [ossec_stats]
 user root
 [ossec_top_groups]
@@ -49,4 +58,4 @@ user root
 user root
 ```
 
-![OSSEC](http://jonschipp.com/crap/munin_ossec.png)
+![OSSEC](https://raw.githubusercontent.com/ncsa/ossec-tools/master/munin/ossec_munin.png)
